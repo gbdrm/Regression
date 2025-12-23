@@ -15,13 +15,14 @@ colSums(is.na(data))
 data$y_numeric <- ifelse(data$y == "yes", 1, 0)
 
 # pick the variables we want for regression
+# now using duration as the dependent variable (continuous outcome)
 regression_data <- data.frame(
-  subscription = data$y_numeric,
+  duration = data$duration,
   age = data$age,
   balance = data$balance,
-  duration = data$duration,
   campaign = data$campaign,
-  previous = data$previous
+  previous = data$previous,
+  subscription = data$y_numeric
 )
 
 # clean up any missing data (probably none but just in case)
@@ -40,8 +41,8 @@ print(sapply(regression_data, sd))
 sink()
 
 # run the regression
-# model: Subscription = β0 + β1(Age) + β2(Balance) + β3(Duration) + β4(Campaign) + β5(Previous) + ε
-model <- lm(subscription ~ age + balance + duration + campaign + previous,
+# model: Duration = β0 + β1(Age) + β2(Balance) + β3(Campaign) + β4(Previous) + β5(Subscription) + ε
+model <- lm(duration ~ age + balance + campaign + previous + subscription,
             data = regression_data)
 
 # check results
@@ -73,24 +74,24 @@ plot(model)
 dev.off()
 
 # make some predictions
-# prediction 1: average person but longer contact duration
+# prediction 1: average client who subscribes
 new_client_1 <- data.frame(
   age = mean(regression_data$age),
   balance = mean(regression_data$balance),
-  duration = mean(regression_data$duration) * 1.5,  # 50% longer than avg
   campaign = mean(regression_data$campaign),
-  previous = mean(regression_data$previous)
+  previous = mean(regression_data$previous),
+  subscription = 1  # subscribes
 )
 
 predict(model, new_client_1, interval = "prediction")
 
-# prediction 2: young person with decent balance
+# prediction 2: young client with high balance who doesn't subscribe
 new_client_2 <- data.frame(
   age = 30,
   balance = 5000,
-  duration = mean(regression_data$duration),
   campaign = 2,
-  previous = 0
+  previous = 0,
+  subscription = 0  # doesn't subscribe
 )
 
 predict(model, new_client_2, interval = "prediction")
@@ -98,14 +99,14 @@ predict(model, new_client_2, interval = "prediction")
 # save predictions to file
 sink("output/predictions.txt")
 cat("Predictions\n\n")
-cat("Scenario 1: Average client with 50% longer contact\n")
+cat("Scenario 1: Average client who subscribes\n")
 print(new_client_1)
-cat("\nPrediction:\n")
+cat("\nPredicted call duration:\n")
 print(predict(model, new_client_1, interval = "prediction"))
 
-cat("\n\nScenario 2: Young client with 5000 balance\n")
+cat("\n\nScenario 2: Young client with 5000 balance who doesn't subscribe\n")
 print(new_client_2)
-cat("\nPrediction:\n")
+cat("\nPredicted call duration:\n")
 print(predict(model, new_client_2, interval = "prediction"))
 sink()
 
