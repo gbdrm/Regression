@@ -1,0 +1,26 @@
+Regression Results
+
+
+Call:
+lm(formula = subscription ~ age + balance + duration + campaign + 
+    previous, data = regression_data)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.6392 -0.1201 -0.0607 -0.0181  1.0197 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -4.009e-02  5.836e-03  -6.869 6.55e-12 ***
+age          6.994e-04  1.305e-04   5.360 8.38e-08 ***
+balance      4.234e-06  4.553e-07   9.300  < 2e-16 ***
+duration     4.874e-04  5.375e-06  90.685  < 2e-16 ***
+campaign    -3.806e-03  4.470e-04  -8.514  < 2e-16 ***
+previous     1.268e-02  5.990e-04  21.164  < 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.2932 on 45205 degrees of freedom
+Multiple R-squared:  0.1679,	Adjusted R-squared:  0.1678 
+F-statistic:  1825 on 5 and 45205 DF,  p-value: < 2.2e-16
+

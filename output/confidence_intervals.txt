@@ -1,0 +1,9 @@
+95% Confidence Intervals
+
+                    2.5 %        97.5 %
+(Intercept) -5.152518e-02 -2.864847e-02
+age          4.436116e-04  9.551255e-04
+balance      3.341545e-06  5.126232e-06
+duration     4.768908e-04  4.979606e-04
+campaign    -4.681801e-03 -2.929629e-03
+previous     1.150413e-02  1.385238e-02

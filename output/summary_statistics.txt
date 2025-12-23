@@ -1,0 +1,20 @@
+Summary Statistics
+
+  subscription        age           balance          duration     
+ Min.   :0.000   Min.   :18.00   Min.   : -8019   Min.   :   0.0  
+ 1st Qu.:0.000   1st Qu.:33.00   1st Qu.:    72   1st Qu.: 103.0  
+ Median :0.000   Median :39.00   Median :   448   Median : 180.0  
+ Mean   :0.117   Mean   :40.94   Mean   :  1362   Mean   : 258.2  
+ 3rd Qu.:0.000   3rd Qu.:48.00   3rd Qu.:  1428   3rd Qu.: 319.0  
+ Max.   :1.000   Max.   :95.00   Max.   :102127   Max.   :4918.0  
+    campaign         previous       
+ Min.   : 1.000   Min.   :  0.0000  
+ 1st Qu.: 1.000   1st Qu.:  0.0000  
+ Median : 2.000   Median :  0.0000  
+ Mean   : 2.764   Mean   :  0.5803  
+ 3rd Qu.: 3.000   3rd Qu.:  0.0000  
+ Max.   :63.000   Max.   :275.0000  
+
+Standard Deviations:
+subscription          age      balance     duration     campaign     previous 
+   0.3214057   10.6187620 3044.7658292  257.5278123    3.0980209    2.3034410 

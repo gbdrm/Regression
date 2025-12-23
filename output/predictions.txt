@@ -1,0 +1,18 @@
+Predictions
+
+Scenario 1: Average client with 50% longer contact
+       age  balance duration campaign  previous
+1 40.93621 1362.272 387.2446 2.763841 0.5803234
+
+Prediction:
+        fit        lwr       upr
+1 0.1799025 -0.3947713 0.7545763
+
+
+Scenario 2: Young client with 5000 balance
+  age balance duration campaign previous
+1  30    5000 258.1631        2        0
+
+Prediction:
+        fit       lwr       upr
+1 0.1202876 -0.454403 0.6949781

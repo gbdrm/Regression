@@ -30,20 +30,18 @@ What we did:
 
 ## 4. Summary Statistics
 
-[TODO: Fill in after running analysis.R]
-
 Basic stats for the variables:
 
 | Variable | Mean | Std Dev | Min | Max |
 |----------|------|---------|-----|-----|
-| Subscription | [X] | [X] | 0 | 1 |
-| Age | [X] | [X] | [X] | [X] |
-| Balance | [X] | [X] | [X] | [X] |
-| Duration | [X] | [X] | [X] | [X] |
-| Campaign | [X] | [X] | [X] | [X] |
-| Previous | [X] | [X] | [X] | [X] |
+| Subscription | 0.117 | 0.321 | 0 | 1 |
+| Age | 40.9 | 10.6 | 18 | 95 |
+| Balance | 1362 | 3045 | -8019 | 102127 |
+| Duration | 258 | 258 | 0 | 4918 |
+| Campaign | 2.76 | 3.10 | 1 | 63 |
+| Previous | 0.58 | 2.30 | 0 | 275 |
 
-Balance and duration have a lot of variation - some people have negative balances, some super high. Contact duration varies a lot too.
+The subscription rate is only 11.7% - most people say no. Balance and duration have a lot of variation - some people have negative balances (overdrafts), others have over 100k. Contact duration varies a lot too, from 0 seconds to over an hour.
 
 ## 5. Model Specification
 
@@ -59,60 +57,58 @@ Using basic OLS regression with lm() in R.
 
 ## 6. Regression Results and Coefficient Interpretation
 
-[TODO: Fill in coefficients after running analysis]
+| Variable | Coefficient | Std Error | t-value | p-value | Significance |
+|----------|------------|-----------|---------|---------|--------------|
+| Intercept | -0.0401 | 0.00584 | -6.87 | < 0.001 | *** |
+| Age | 0.000699 | 0.000131 | 5.36 | < 0.001 | *** |
+| Balance | 0.00000423 | 0.000000455 | 9.30 | < 0.001 | *** |
+| Duration | 0.000487 | 0.00000538 | 90.7 | < 0.001 | *** |
+| Campaign | -0.00381 | 0.000447 | -8.51 | < 0.001 | *** |
+| Previous | 0.0127 | 0.000599 | 21.2 | < 0.001 | *** |
 
-| Variable | Coefficient | Std Error | t-value | p-value |
-|----------|------------|-----------|---------|---------|
-| Intercept | [X] | [X] | [X] | [X] |
-| Age | [X] | [X] | [X] | [X] |
-| Balance | [X] | [X] | [X] | [X] |
-| Duration | [X] | [X] | [X] | [X] |
-| Campaign | [X] | [X] | [X] | [X] |
-| Previous | [X] | [X] | [X] | [X] |
-
-What this means:
-- **Duration** - this is probably going to be the big one. Longer phone calls = more likely to subscribe
-- **Balance** - people with more money might be slightly more likely to subscribe
-- **Age, Campaign, Previous** - probably not as important
+What this actually means:
+- **Duration** - huge effect. Each extra second of contact time increases subscription probability by 0.0487 percentage points. So a 100-second longer call increases probability by about 4.9%
+- **Previous** - surprisingly important! Each previous contact increases subscription probability by 1.27 percentage points
+- **Campaign** - negative effect! More contacts in this campaign actually decreases probability. Each additional contact reduces probability by 0.38%
+- **Balance** - tiny but significant. Each additional euro increases probability by 0.000423%
+- **Age** - very small effect. Each year older increases probability by 0.07%
 
 ## 7. Statistical Significance
 
 Looking at p-values (α = 0.05):
 
-[TODO: Add after running]
+All variables are highly significant (p < 0.001)! This is actually surprising - we expected only duration and balance to matter, but everything came out significant.
 
-Expected:
-- Duration and Balance should be significant (p < 0.05)
-- The other variables probably won't be
+- **Duration**: p < 2e-16 (extremely significant)
+- **Previous**: p < 2e-16 (extremely significant)
+- **Campaign**: p < 2e-16 (significant, but negative)
+- **Balance**: p < 2e-16 (significant)
+- **Age**: p = 8.38e-08 (significant)
 
-If p < 0.05, means it's probably a real relationship and not just random chance.
+With 45,211 observations, even small effects can be statistically significant. The real question is which ones matter practically - duration and previous contacts seem to have the biggest actual impact.
 
 ## 8. Confidence Intervals
 
 95% confidence intervals for the coefficients:
 
-[TODO: Fill in from output]
+| Variable | Lower CI | Upper CI | Includes Zero? |
+|----------|----------|----------|----------------|
+| Age | 0.000444 | 0.000955 | No |
+| Balance | 0.00000334 | 0.00000513 | No |
+| Duration | 0.000477 | 0.000498 | No |
+| Campaign | -0.00468 | -0.00293 | No |
+| Previous | 0.0115 | 0.0139 | No |
 
-| Variable | Lower CI | Upper CI |
-|----------|----------|----------|
-| Age | [X] | [X] |
-| Balance | [X] | [X] |
-| Duration | [X] | [X] |
-| Campaign | [X] | [X] |
-| Previous | [X] | [X] |
-
-If the interval doesn't include zero, the variable matters. If it does include zero, not significant.
+None of the intervals include zero, which confirms all variables are significant. The tightest interval is duration (very precise estimate), while campaign is also pretty tight but negative.
 
 ## 9. Coefficient of Determination (R²)
 
-[TODO: Add R² value]
+R² = 0.168
+Adjusted R² = 0.168
 
-R² = [X]
-Adjusted R² = [X]
+This means about 16.8% of the variation in subscriptions is explained by these variables. That's not great - 83% of the variation is still unexplained. There's a lot going on with subscription decisions that we're not capturing with just these 5 variables.
 
-This means about [X]% of the variation in subscriptions is explained by these variables. The rest is other stuff we're not measuring.
-
-Since we're using regular regression on a binary outcome (0/1), the R² isn't perfect but gives a general idea of fit. Logistic regression would be better here but this works for now.
+Since we're using regular regression on a binary outcome (0/1), the R² isn't perfect but gives a general idea of fit. Logistic regression would be better here but this works for now. The low R² suggests we're missing important factors - probably things like job type, education, economic conditions, or the actual content of the conversations.
 
 ## 10. Residual Diagnostics
 
@@ -133,39 +129,43 @@ Expected issues:
 We made predictions for two scenarios:
 
 **Scenario 1: Average client but longer phone call**
-- Age: [mean age]
-- Balance: [mean balance]
-- Duration: [1.5x mean] (50% longer than average)
-- Campaign: [mean]
-- Previous: [mean]
+- Age: 41 years
+- Balance: €1362
+- Duration: 387 seconds (50% longer than average)
+- Campaign: 2.76 contacts
+- Previous: 0.58 contacts
 
-Predicted probability: [X]
+Predicted probability: **18.0%** (95% CI: -39.5% to 75.5%)
 
 **Scenario 2: Young person with good balance**
-- Age: 30
-- Balance: 5000
-- Duration: [mean]
-- Campaign: 2
-- Previous: 0
+- Age: 30 years
+- Balance: €5000
+- Duration: 258 seconds (average)
+- Campaign: 2 contacts
+- Previous: 0 contacts
 
-Predicted probability: [X]
+Predicted probability: **12.0%** (95% CI: -45.4% to 69.5%)
+
+The longer contact duration in scenario 1 boosts the probability from 12% to 18% - a 50% increase. But the confidence intervals are really wide and go below zero (which doesn't make sense for a probability), which shows the limitations of using linear regression for binary outcomes.
 
 ## 12. Conclusion and Limitations
 
 **Main findings:**
-- Duration of phone call is the biggest predictor - longer calls = more subscriptions
-- Account balance has a smaller positive effect
-- Age and campaign stuff doesn't matter as much
+- Duration of phone call is by far the biggest predictor - longer calls = more subscriptions
+- Previous contact history matters a lot (contrary to what we expected)
+- Campaign contacts have a negative effect - calling people more times in the same campaign actually hurts
+- Account balance and age have small but significant effects
+- Overall, we only explain 16.8% of the variation - lots of other factors matter
 
 **What this means:**
-Quality of the conversation matters more than quantity of contacts. Banks should focus on having good conversations rather than just calling people more times.
+Quality beats quantity. Banks should focus on having meaningful conversations rather than bombarding people with calls. The negative campaign effect is interesting - maybe people get annoyed if you call them too many times. Previous contacts help, but current campaign contacts hurt - suggests that building relationships over time works better than aggressive short-term campaigns.
 
 **Limitations:**
-- Using linear regression on binary data isn't ideal - logistic regression would be better
-- Lots of variation still unexplained (R² = [X]) - there are other factors we're not capturing
+- Using linear regression on binary data isn't ideal - logistic regression would be better (we get nonsensical predictions below 0%)
+- Lots of variation still unexplained (R² = 0.168) - we're missing important factors
 - Duration might be backwards causality - maybe people who are interested talk longer, not that talking longer makes them interested
-- Data is from 2008-2010 in Portugal - might not apply now or elsewhere
-- We're missing other important stuff like job, education, economic conditions
+- Data is from 2008-2010 in Portugal during the financial crisis - might not apply now or elsewhere
+- We're missing other important stuff like job, education, economic conditions, and what's actually said in the conversations
 
 **Future work:**
 - Try logistic regression instead
